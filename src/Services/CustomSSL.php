@@ -13,19 +13,6 @@ use Bkstar123\CFBuddy\Services\CFServiceBase;
 class CustomSSL extends CFServiceBase
 {
     /**
-     * @var \Bkstar123\CFBuddy\Services\ZoneMgmt $zoneMgmt
-     */
-    protected $zoneMgmt;
-
-    /**
-     * Create instance
-     */
-    public function __construst()
-    {
-        parent::__construst();
-        $this->zoneMgmt = resolve('zoneMgmt');
-    }
-    /**
      * Get the ID of the current SSL certificate for the given zone
      *
      * @param string $zoneID
@@ -108,7 +95,7 @@ class CustomSSL extends CFServiceBase
      */
     public function fetchCertData($zoneID, $certID)
     {
-        $sslMode = $this->zoneMgmt->getZoneSSLMode($zoneID);
+        $sslMode = resolve('zoneMgmt')->getZoneSSLMode($zoneID);
         $url = "zones/$zoneID/custom_certificates/$certID";
         try {
             $res = $this->client->request('GET', $url);
