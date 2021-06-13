@@ -62,12 +62,13 @@ class ZoneMgmt extends CFServiceBase
     }
 
     /**
-     * Get the list of Cloudflare zones
+     * Get the paginated list of all Cloudflare zones under an account
      *
      * @param integer $page
-     * @return mixed
+     * @param integer $perPage
+     * @return array|false
      */
-    public function getZones($page, $perPage)
+    public function getPaginatedZones($page = 1, $perPage =100)
     {
         $zones = [];
         $url = "zones?per_page=$perPage&page=$page";
@@ -84,7 +85,63 @@ class ZoneMgmt extends CFServiceBase
                     }, $data['result']);
                     return $zones;
                 } else {
-                    return null;
+                    return [];
+                }
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Get the list of all sub domains configured under the given zone
+     *
+     * @param string $zoneID
+     * @return array 
+     */
+    public function getZoneSubDomains($zoneID)
+    {
+        $zoneSubDomains = [];
+        $page = 1;
+        do {
+            $data = $this->getZonePaginatedSubDomains($zoneID, $page, 100);
+            if (empty($data)) {
+                break;
+            }
+            $zoneSubDomains = array_merge($zoneSubDomains, $data);
+            ++$page;
+        } while (!empty($data));
+        return $zoneSubDomains;
+    }
+
+    /**
+     * Get the paginated list of sub domains configured under the given zone
+     *
+     * @param string $zoneID
+     * @param integer $page
+     * @param integer $perPage
+     * @return array|false
+     */
+    protected function getZonePaginatedSubDomains($zoneID, $page = 1, $perPage = 100)
+    {
+        $subDomains = [];
+        $url = "zones/$zoneID/dns_records?per_page=$perPage&page=$page";
+        try {
+            $res = $this->client->request('GET', $url);
+            $data = json_decode($res->getBody()->getContents(), true);
+            if ($data["success"]) {
+                if (!empty($data['result'])) {
+                    $dns_records = array_filter($data['result'], function($record) {
+                        return $record['type'] == 'CNAME' || $record['type'] == 'A';
+                    });
+                    $subDomains = array_map(function($record) {
+                        return $record['name'];
+                    }, $dns_records);
+                    return $subDomains;
+                } else {
+                    return [];
                 }
             } else {
                 return false;
