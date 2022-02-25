@@ -99,7 +99,7 @@ class ZoneMgmt extends CFServiceBase
      * Get the list of all sub domains configured under the given zone
      *
      * @param string $zoneID
-     * @return array 
+     * @return array
      */
     public function getZoneSubDomains($zoneID)
     {
@@ -133,10 +133,10 @@ class ZoneMgmt extends CFServiceBase
             $data = json_decode($res->getBody()->getContents(), true);
             if ($data["success"]) {
                 if (!empty($data['result'])) {
-                    $dns_records = array_filter($data['result'], function($record) {
+                    $dns_records = array_filter($data['result'], function ($record) {
                         return $record['type'] == 'CNAME' || $record['type'] == 'A';
                     });
-                    $subDomains = array_map(function($record) {
+                    $subDomains = array_map(function ($record) {
                         return $record['name'];
                     }, $dns_records);
                     return $subDomains;
