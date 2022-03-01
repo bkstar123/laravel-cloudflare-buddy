@@ -37,17 +37,23 @@ class CFFWRule
     public $action;
 
     /**
+     * @var array
+     */
+    public $products;
+
+    /**
      * Instantiate a \Bkstar123\CFBuddy\Components\CFFWRule\CFFWRule object
      * @param string  $description
      * @param bool  $paused
      * @param string  $filterID
      * @param string  $filterExpression
      * @param string  $action
+     * @param array  $products
      * @param string  $id
      *
      * @return void
      */
-    public function __construct(string $description, bool $paused, CFFWRuleFilter $filter, string $action, string $id = null)
+    public function __construct(string $description, bool $paused, CFFWRuleFilter $filter, string $action, array $products = [], string $id = null)
     {
         if (!is_null($id)) {
             $this->id = $id;
@@ -56,6 +62,9 @@ class CFFWRule
         $this->paused = $paused;
         $this->filter = $filter;
         $this->action = $action;
+        if (!empty($products)) {
+            $this->products = $products;
+        }
     }
 
     /**
@@ -73,6 +82,9 @@ class CFFWRule
         ];
         if (!is_null($this->id)) {
             $res['id'] = $this->id;
+        }
+        if (!empty($this->products)) {
+            $res['products'] = $this->products;
         }
         return $res;
     }
