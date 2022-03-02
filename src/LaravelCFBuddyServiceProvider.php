@@ -5,10 +5,10 @@
 * @author: tuanha
 * @last-mod: 13-Dec-2020
 */
-
 namespace Bkstar123\CFBuddy;
 
 use Illuminate\Support\ServiceProvider;
+use Bkstar123\CFBuddy\Services\CFZoneFW;
 use Bkstar123\CFBuddy\Services\ZoneMgmt;
 use Bkstar123\CFBuddy\Services\CustomSSL;
 
