@@ -154,10 +154,12 @@ class ZoneMgmt extends CFServiceBase
         $url = "zones/$zoneID/dns_records?per_page=$perPage&page=$page";
         if (!is_null($content)) {
             $url .= "&content=$content";
-        } else if (!is_null($proxied)) {
+        } 
+        if (!is_null($proxied)) {
             $proxied = (int) $proxied;
             $url .= "&proxied=$proxied";
-        } else if (!is_null($hostname)) {
+        }
+        if (!is_null($hostname)) {
             $url .= "&name=$hostname";
         }
         try {
