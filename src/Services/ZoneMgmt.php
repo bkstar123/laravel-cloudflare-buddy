@@ -107,17 +107,18 @@ class ZoneMgmt extends CFServiceBase
      * @return array
      */
     public function getZoneSubDomains(
-        $zoneID, 
-        $hostname = null, 
-        $onlyDNSName = true, 
-        $onlyProd = true, 
-        $content = null, 
-        $proxied = true)
+        $zoneID,
+        $hostname = null,
+        $onlyDNSName = true,
+        $onlyProd = true,
+        $content = null,
+        $proxied = true
+    )
     {
         $zoneSubDomains = [];
         $page = 1;
         do {
-            $data = $this->getDNSRecordsForAZone($zoneID, $hostname, $onlyDNSName, $onlyProd, $content, $proxied , $page, 100);
+            $data = $this->getDNSRecordsForAZone($zoneID, $hostname, $onlyDNSName, $onlyProd, $content, $proxied, $page, 100);
             if (empty($data)) {
                 break;
             }
@@ -141,20 +142,21 @@ class ZoneMgmt extends CFServiceBase
      * @return array
      */
     public function getDNSRecordsForAZone(
-        $zoneID, 
+        $zoneID,
         $hostname = null,
-        $onlyDNSName = true, 
-        $onlyProd = true, 
-        $content = null, 
-        $proxied = true, 
-        $page = 1, 
-        $perPage = 100)
+        $onlyDNSName = true,
+        $onlyProd = true,
+        $content = null,
+        $proxied = true,
+        $page = 1,
+        $perPage = 100
+    )
     {
         $entries = [];
         $url = "zones/$zoneID/dns_records?per_page=$perPage&page=$page";
         if (!is_null($content)) {
             $url .= "&content=$content";
-        } 
+        }
         if (!is_null($proxied)) {
             $proxied = (int) $proxied;
             $url .= "&proxied=$proxied";

@@ -7,6 +7,7 @@
 */
 namespace Bkstar123\CFBuddy;
 
+use Bkstar123\CFBuddy\Services\CFIP;
 use Illuminate\Support\ServiceProvider;
 use Bkstar123\CFBuddy\Services\CFZoneFW;
 use Bkstar123\CFBuddy\Services\ZoneMgmt;
@@ -39,6 +40,9 @@ class LaravelCFBuddyServiceProvider extends ServiceProvider
         });
         $this->app->singleton('cfZoneFW', function ($app) {
             return new CFZoneFW;
+        });
+        $this->app->singleton('cfip', function ($app) {
+            return new CFIP;
         });
         $this->mergeConfigFrom(__DIR__.'/Config/bkstar123_laravel_cfbuddy.php', 'bkstar123_laravel_cfbuddy');
     }
