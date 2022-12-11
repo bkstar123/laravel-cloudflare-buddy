@@ -14,7 +14,7 @@ use Bkstar123\CFBuddy\Services\CFServiceBase;
 class ZoneMgmt extends CFServiceBase
 {
     /**
-     * Get the ID of the given zone name
+     * Get the ID of the given zone name if it is found and being active
      *
      * @param string $zoneName
      * @return mixed null|false|string
@@ -68,25 +68,19 @@ class ZoneMgmt extends CFServiceBase
      * @param integer $perPage
      * @return array|false
      */
-    public function getPaginatedZones($page = 1, $perPage =100)
+    public function getPaginatedZones($page = 1, $perPage = 100, $status = '')
     {
         $zones = [];
-        $url = "zones?per_page=$perPage&page=$page";
+        if (empty($status)) {
+            $url = "zones?per_page=$perPage&page=$page";
+        } else {
+            $url = "zones?per_page=$perPage&page=$page&status=$status";
+        }
         try {
             $res = $this->client->request('GET', $url);
             $data = json_decode($res->getBody()->getContents(), true);
             if ($data["success"]) {
-                if (!empty($data['result'])) {
-                    $zones = array_map(function ($zone) {
-                        return [
-                            'id' => $zone['id'],
-                            'name' => $zone['name']
-                        ];
-                    }, $data['result']);
-                    return $zones;
-                } else {
-                    return [];
-                }
+                return $data['result'];
             } else {
                 return false;
             }
