@@ -211,4 +211,27 @@ class ZoneMgmt extends CFServiceBase
             return false;
         }
     }
+
+    /**
+     * Get universal SSL setting status for a zone
+     *
+     * @param $zoneID string
+     *
+     * @return false|null|array
+     */
+    public function getUniversalSSLSettingStatus($zoneID)
+    {
+        $url = "zones/$zoneID/ssl/universal/settings";
+        try {
+            $res = $this->client->request('GET', $url);
+            $data = json_decode($res->getBody()->getContents(), true);
+            if ($data["success"]) {
+                return $data['result'];
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
