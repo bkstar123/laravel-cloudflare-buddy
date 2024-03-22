@@ -234,4 +234,53 @@ class ZoneMgmt extends CFServiceBase
             return false;
         }
     }
+
+    /**
+     * Get CF-for-SaaS custom hostnames for the given SaaS zone
+     *
+     * @param $zoneID string
+     * @param $getAll bool
+     * @param $page int
+     * @param $perPage int
+     *
+     * @return false|null|array
+     */
+    public function getCF4SaaSCustomHostnames($zoneID, $getAll = false, $page = 1, $perPage = 100)
+    {
+        if ($getAll) {
+            $page = 1;
+            $allHostnames = [];
+            do {
+                $hostnames = $this->getCF4SaaSCustomHostnames($zoneID, false, $page, 1000);
+                if (empty($hostnames)) {
+                    break;
+                } else {
+                    $allHostnames = array_merge($allHostnames, $hostnames);
+                }
+                ++$page;
+            } while (!empty($hostnames));
+            return $allHostnames;
+        } else {
+            $url = "zones/$zoneID/custom_hostnames?per_page=$perPage&page=$page";
+            try {
+                $res = $this->client->request('GET', $url);
+                $data = json_decode($res->getBody()->getContents(), true);
+                if ($data["success"]) {
+                    $data = array_map(function ($item) {
+                        return [
+                            'hostname' => $item['hostname'],
+                            'status' => $item['status'],
+                            'custom_origin_server' => $item['custom_origin_server'],
+                            'created_at' => $item['created_at']
+                        ];
+                    }, $data['result']);
+                    return $data;
+                } else {
+                    return false;
+                }
+            } catch (Exception $e) {
+                return false;
+            }
+        }     
+    }
 }
