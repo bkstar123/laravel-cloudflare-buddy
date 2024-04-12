@@ -271,7 +271,9 @@ class ZoneMgmt extends CFServiceBase
                             'hostname' => $item['hostname'],
                             'status' => $item['status'],
                             'custom_origin_server' => $item['custom_origin_server'],
-                            'created_at' => $item['created_at']
+                            'created_at' => $item['created_at'],
+                            'ssl_type' => $item['ssl']['type'],
+                            'ssl_status' => $item['ssl']['status']
                         ];
                     }, $data['result']);
                     return $data;
