@@ -78,7 +78,7 @@ class ZoneMgmt extends CFServiceBase
             $url = "zones?per_page=$perPage&page=$page&status=$status";
         }
         if (!empty($accountID)) {
-            $url .= "&account.id=$accountID"
+            $url .= "&account.id=$accountID";
         }
         try {
             $res = $this->client->request('GET', $url);
