@@ -66,15 +66,19 @@ class ZoneMgmt extends CFServiceBase
      *
      * @param integer $page
      * @param integer $perPage
+     * @param string $status
      * @return array|false
      */
-    public function getPaginatedZones($page = 1, $perPage = 100, $status = '')
+    public function getPaginatedZones($page = 1, $perPage = 100, $status = '', $accountID = '')
     {
         $zones = [];
         if (empty($status)) {
             $url = "zones?per_page=$perPage&page=$page";
         } else {
             $url = "zones?per_page=$perPage&page=$page&status=$status";
+        }
+        if (!empty($accountID)) {
+            $url .= "&account.id=$accountID"
         }
         try {
             $res = $this->client->request('GET', $url);
