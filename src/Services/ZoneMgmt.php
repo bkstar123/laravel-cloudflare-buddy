@@ -271,13 +271,17 @@ class ZoneMgmt extends CFServiceBase
                 $data = json_decode($res->getBody()->getContents(), true);
                 if ($data["success"]) {
                     $data = array_map(function ($item) {
+                        $sslType = $item['ssl']['type'];
+                        $sslMethod = $item['ssl']['method'];
+                        $sslStatus = $item['ssl']['status'];
                         return [
                             'hostname' => $item['hostname'],
                             'status' => $item['status'],
                             'custom_origin_server' => $item['custom_origin_server'],
                             'created_at' => $item['created_at'],
-                            'ssl_type' => $item['ssl']['type'],
-                            'ssl_status' => $item['ssl']['status']
+                            'ssl_type' => $sslType,
+                            'ssl_method' => $sslMethod,
+                            'ssl_status' => $sslStatus
                         ];
                     }, $data['result']);
                     return $data;
