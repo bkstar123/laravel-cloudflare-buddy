@@ -26,7 +26,7 @@ class CFServiceBase
             'headers' => [
                 'X-Auth-Email' => config('bkstar123_laravel_cfbuddy.cloudflare.api_email'),
                 'X-Auth-Key'   => config('bkstar123_laravel_cfbuddy.cloudflare.api_key'),
-                'Authorization' => 'Bearer ' . config('bkstar123_laravel_cfbuddy.cloudflare.api_token'),
+                //'Authorization' => 'Bearer ' . config('bkstar123_laravel_cfbuddy.cloudflare.api_token'),  // Not use API token
                 'Content-Type' => 'application/json'
             ]
         ]);

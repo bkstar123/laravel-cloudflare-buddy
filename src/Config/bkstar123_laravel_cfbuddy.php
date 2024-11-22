@@ -11,6 +11,6 @@ return [
         'base_url' => env('CF_BASE_URI'),
         'api_email' => env('CF_API_EMAIL', ''),
         'api_key' => env('CF_API_KEY', ''),
-        'api_token' => env('CF_API_TOKEN', ''),
+        //'api_token' => env('CF_API_TOKEN', ''), //Not use API token
     ]
 ];
